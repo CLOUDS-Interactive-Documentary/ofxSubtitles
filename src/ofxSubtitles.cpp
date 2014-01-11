@@ -28,9 +28,13 @@ void ofxSubtitles::setup(string fontPath, int fontSize, int fps, ofxSubtitleJust
     setJustification(j);
 }
 
-void ofxSubtitles::setup(string subPath, string fontPath, int fontSize, int fps, ofxSubtitleJustification j){
-    load(subPath);
+bool ofxSubtitles::setup(string subPath, string fontPath, int fontSize, int fps, ofxSubtitleJustification j){
     setup(fontPath, fontSize, fps, j);
+    if (!load(subPath)) {
+        return false;
+    }
+    
+    return true;
 }
 
 ofxSubtitles::~ofxSubtitles(){
@@ -39,7 +43,7 @@ ofxSubtitles::~ofxSubtitles(){
 
 
 bool ofxSubtitles::load(string path){
-
+    cout<<"trying to load subtitle path = "<<path<<endl;
     filepath = path;
 	bool isSRTFile = ofToLower(ofFilePath::getFileExt(path)) == "srt";
     srtFile = ofBufferFromFile(path);
@@ -71,8 +75,24 @@ bool ofxSubtitles::load(string path){
             ofLogError("ofxSubtitles") << "Error parsing time from line " << srtLine << " in file " << path << " on line " << lineNumber << " with index " << title.getIndex() << endl;
             break;
         }
-        title.setStartTime(timecode.millisForTimecode(times[0]));
-        title.setEndTime(timecode.millisForTimecode(times[2]));
+        
+        if (timecode.millisForTimecode(times[0]) != -1)
+        {
+            // format: HH:MM:SS:MIL --> HH:MM:SS:MIL
+            title.setStartTime(timecode.millisForTimecode(times[0]));
+            title.setEndTime(timecode.millisForTimecode(times[2]));
+        }
+        if (timecode.millisForTimecode2(times[0]) != -1)
+        {
+            // format: HH:MM:SS.D --> HH:MM:SS.D
+            title.setStartTime(timecode.millisForTimecode2(times[0]));
+            title.setEndTime(timecode.millisForTimecode2(times[2]));
+        }
+        else {
+            // format: frame --> frame
+            title.setStartTime(timecode.millisForFrame(ofToInt(times[0])));
+            title.setEndTime(timecode.millisForFrame(ofToInt(times[2])));
+        }
 
         if(title.getStartTime() == -1 || title.getEndTime() == -1 || title.getStartTime() > title.getEndTime()){
             ofLogError("ofxSubtitles") << "Error parsing time from line " << srtLine << " in file " << path << " on line " << lineNumber << " with index " << title.getIndex() << endl;
