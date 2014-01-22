@@ -34,11 +34,13 @@ class ofxSubtitles {
     bool load(string path); //Constructs subtitle vector
     bool save();  //saves any changes to the same file that was load
     bool save(string path); //saves changes to a new file, does not affect filePath
-        
+
+    string getCurrentLine1();
+    string getCurrentLine2();
+
     int getNumTitles();
 
     vector<ofxSubtitleUnit>& getSubtitles();
-    
     ofxSubtitleUnit* addSubtitle(long startTime, long endTime, string titleLine1, string titleLine2);
     ofRectangle getTextBoundingRect();
     

@@ -82,8 +82,7 @@ bool ofxSubtitles::load(string path){
             title.setStartTime(timecode.millisForTimecode(times[0]));
             title.setEndTime(timecode.millisForTimecode(times[2]));
         }
-        if (timecode.millisForTimecode2(times[0]) != -1)
-        {
+        else if (timecode.millisForTimecode2(times[0]) != -1) {
             // format: HH:MM:SS.D --> HH:MM:SS.D
             title.setStartTime(timecode.millisForTimecode2(times[0]));
             title.setEndTime(timecode.millisForTimecode2(times[2]));
@@ -98,6 +97,7 @@ bool ofxSubtitles::load(string path){
             ofLogError("ofxSubtitles") << "Error parsing time from line " << srtLine << " in file " << path << " on line " << lineNumber << " with index " << title.getIndex() << endl;
             break;
         }
+        
         srtLine = srtFile.getNextLine();
         lineNumber++;
         
@@ -264,7 +264,7 @@ void ofxSubtitles::draw(float x, float y){
         return;
     }
     vector<string>& subLines = currentlyDisplayedSub->getLines();
-    
+
     //add 1/2 the line height in the case of only one line, which works for making
     //1 and 2 line subtitle films look much nicer
 	float centerOneLineAddition = 0;
@@ -278,27 +278,28 @@ void ofxSubtitles::draw(float x, float y){
             font.drawString(subLines[i], x - textBounds.width, y + font.getLineHeight()*i + centerOneLineAddition);
         }
 	    else if(subsJustification == TEXT_JUSTIFICATION_CENTER){
-            font.drawString(subLines[i], x - textBounds.width/2, y + font.getLineHeight()*i + centerOneLineAddition);
+            font.drawString(subLines[i],
+                            x - textBounds.width/2,
+                            y + font.getLineHeight()*i + centerOneLineAddition);
+//            cout << "drawing line at " << subLines[i] << " at position " << (x - textBounds.width/2) << " " << (y + font.getLineHeight()*i + centerOneLineAddition) << endl;
+            
         }
     }
-    //TODO right justification
-//    else if(subsJustification == RIGHT && canDraw){
-//        
-//        vector<UTF8String> text = currentlyDisplayedSub.getLines();
-//        
-//        for(int i = 0; i < currentlyDisplayedSub.getLines().size(); i++){
-//            textBounds = font.getStringBoundingBox(text[i], 0, 0);
-//            
-//            if(i == 0){
-//                font.drawString(text[i], x - textBounds.width, drawPoint.y);
-//            }
-//            else{
-//                font.drawString(text[i], x - textBounds.width, drawPoint.y + font.getLineHeight());
-//            }
-//        }
-//    }
 }
 
+string ofxSubtitles::getCurrentLine1(){
+    if(currentlyDisplayedSub != NULL && currentlyDisplayedSub->getLines().size() > 0){
+        return currentlyDisplayedSub->getLines()[0];
+    }
+    return "";
+}
+
+string ofxSubtitles::getCurrentLine2(){
+    if(currentlyDisplayedSub != NULL && currentlyDisplayedSub->getLines().size() > 1){
+        return currentlyDisplayedSub->getLines()[1];
+    }
+    return "";
+}
 
 vector<ofxSubtitleUnit>& ofxSubtitles::getSubtitles(){
     return subtitleList;
