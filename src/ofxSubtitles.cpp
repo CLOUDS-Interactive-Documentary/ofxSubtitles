@@ -20,7 +20,7 @@ ofxSubtitles::ofxSubtitles(){
     currentlyDisplayedSub = NULL;
     subsLoaded = false;
     subsJustification = TEXT_JUSTIFICATION_CENTER;
-	lineHeight = .5;
+	lineHeight = 1.0;
 }
 
 void ofxSubtitles::setup(string fontPath, int fontSize, int fps, ofxSubtitleJustification j){
@@ -270,18 +270,21 @@ void ofxSubtitles::draw(float x, float y){
     //1 and 2 line subtitle films look much nicer
 	float centerOneLineAddition = 0;
     if(subLines.size() == 1){
-        centerOneLineAddition = font.getLineHeight()*lineHeight;
+        centerOneLineAddition = font.getLineHeight()*.5;
     }
     
     for(int i = 0; i < subLines.size(); i++){
         textBounds = font.getStringBoundingBox(subLines[i], 0, 0);
 	    if(subsJustification == TEXT_JUSTIFICATION_LEFT){
-            font.drawString(subLines[i], x - textBounds.width, y + font.getLineHeight()*i + centerOneLineAddition);
+            font.drawString(subLines[i], x, y + font.getLineHeight()*i + centerOneLineAddition);
         }
-	    else if(subsJustification == TEXT_JUSTIFICATION_CENTER){
+	    else if(subsJustification == TEXT_JUSTIFICATION_RIGHT){
+			font.drawString(subLines[i], x - textBounds.width, y + font.getLineHeight()*i*lineHeight + centerOneLineAddition);
+		}
+		else if(subsJustification == TEXT_JUSTIFICATION_CENTER){
             font.drawString(subLines[i],
                             x - textBounds.width/2,
-                            y + font.getLineHeight()*i + centerOneLineAddition);
+                            y + font.getLineHeight()*i*lineHeight + centerOneLineAddition);
 //            cout << "drawing line at " << subLines[i] << " at position " << (x - textBounds.width/2) << " " << (y + font.getLineHeight()*i + centerOneLineAddition) << endl;
             
         }
