@@ -20,6 +20,7 @@ ofxSubtitles::ofxSubtitles(){
     currentlyDisplayedSub = NULL;
     subsLoaded = false;
     subsJustification = TEXT_JUSTIFICATION_CENTER;
+	lineHeight = .5;
 }
 
 void ofxSubtitles::setup(string fontPath, int fontSize, int fps, ofxSubtitleJustification j){
@@ -269,7 +270,7 @@ void ofxSubtitles::draw(float x, float y){
     //1 and 2 line subtitle films look much nicer
 	float centerOneLineAddition = 0;
     if(subLines.size() == 1){
-        centerOneLineAddition = font.getLineHeight()*.5;
+        centerOneLineAddition = font.getLineHeight()*lineHeight;
     }
     
     for(int i = 0; i < subLines.size(); i++){

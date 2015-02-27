@@ -14,7 +14,7 @@
 #include "ofxTimecode.h"
 #include "ofxSubtitleUnit.h"
 
-//uncomment this to use FTGL for font rendering, which allos for Unicode such as Japanese
+//uncomment this to use FTGL for font rendering, which allows for Unicode such as Japanese
 #define USE_FTGL
 
 #ifdef USE_FTGL
@@ -77,7 +77,7 @@ class ofxSubtitles {
 	#else
     ofTrueTypeFont font;
 	#endif
-    
+    float lineHeight;
   protected:
 
     string filepath;
