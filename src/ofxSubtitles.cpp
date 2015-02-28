@@ -21,6 +21,7 @@ ofxSubtitles::ofxSubtitles(){
     subsLoaded = false;
     subsJustification = TEXT_JUSTIFICATION_CENTER;
 	lineHeight = 1.0;
+    forceUpperCase = false;
 }
 
 void ofxSubtitles::setup(string fontPath, int fontSize, int fps, ofxSubtitleJustification j){
@@ -34,7 +35,6 @@ bool ofxSubtitles::setup(string subPath, string fontPath, int fontSize, int fps,
     if (!load(subPath)) {
         return false;
     }
-    
     return true;
 }
 
@@ -265,7 +265,12 @@ void ofxSubtitles::draw(float x, float y){
         return;
     }
     vector<string>& subLines = currentlyDisplayedSub->getLines();
-
+    if(forceUpperCase){
+        for(int i = 0; i < subLines.size(); i++){
+            subLines[i] = ofToUpper(subLines[i]);
+        }
+    }
+    
     //add 1/2 the line height in the case of only one line, which works for making
     //1 and 2 line subtitle films look much nicer
 	float centerOneLineAddition = 0;
@@ -284,9 +289,7 @@ void ofxSubtitles::draw(float x, float y){
 		else if(subsJustification == TEXT_JUSTIFICATION_CENTER){
             font.drawString(subLines[i],
                             x - textBounds.width/2,
-                            y + font.getLineHeight()*i*lineHeight + centerOneLineAddition);
-//            cout << "drawing line at " << subLines[i] << " at position " << (x - textBounds.width/2) << " " << (y + font.getLineHeight()*i + centerOneLineAddition) << endl;
-            
+                            y + font.getLineHeight()*i*lineHeight + centerOneLineAddition);            
         }
     }
 }

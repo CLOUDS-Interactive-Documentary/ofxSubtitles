@@ -78,6 +78,8 @@ class ofxSubtitles {
     ofTrueTypeFont font;
 	#endif
     float lineHeight;
+    bool forceUpperCase;
+    
   protected:
 
     string filepath;
