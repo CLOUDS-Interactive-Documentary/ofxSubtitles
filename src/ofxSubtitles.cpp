@@ -29,9 +29,21 @@ void ofxSubtitles::setup(string fontPath, int fontSize, int fps, ofxSubtitleJust
     setFramesPerSecond(fps);
     setJustification(j);
 }
+void ofxSubtitles::setup(ofBuffer& fontBuffer, int fontSize, int fps, ofxSubtitleJustification j){
+    font.loadFont(fontBuffer, fontSize);
+    setFramesPerSecond(fps);
+    setJustification(j);
+}
 
 bool ofxSubtitles::setup(string subPath, string fontPath, int fontSize, int fps, ofxSubtitleJustification j){
     setup(fontPath, fontSize, fps, j);
+    if (!load(subPath)) {
+        return false;
+    }
+    return true;
+}
+bool ofxSubtitles::setup(string subPath, ofBuffer& fontBuffer, int fontSize, int fps, ofxSubtitleJustification j){
+    setup(fontBuffer, fontSize, fps, j);
     if (!load(subPath)) {
         return false;
     }

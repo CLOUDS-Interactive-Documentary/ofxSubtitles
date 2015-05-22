@@ -28,7 +28,9 @@ class ofxSubtitles {
     ~ofxSubtitles();
     
     void setup(string fontPath, int fontSize = 12, int fps = 30, ofxSubtitleJustification j =  TEXT_JUSTIFICATION_CENTER);
+    void setup(ofBuffer& fontBuffer, int fontSize = 12, int fps = 30, ofxSubtitleJustification j =  TEXT_JUSTIFICATION_CENTER);
     bool setup(string subPath, string fontPath, int fontSize = 12, int fps = 30, ofxSubtitleJustification j =  TEXT_JUSTIFICATION_CENTER);
+    bool setup(string subPath, ofBuffer& fontBuffer, int fontSize = 12, int fps = 30, ofxSubtitleJustification j =  TEXT_JUSTIFICATION_CENTER);
     void loadFont(string path, int fontsize);
     
     bool load(string path); //Constructs subtitle vector
